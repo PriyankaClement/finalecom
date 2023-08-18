@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription %}
+    We have variety of products......
+{% endblock %}
+
+{% block title %}
+    Search
+{% endblock %}
+
+{% block content %}
+<div>
+  <p class="text-center my_search_text">You have searched for:<br>"{{query}}"</p>
+</div>
+
+{% if products|length > 0 %}
+<div class="container card-container my_bottom_margin">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for product in products %}
+            <div class="col mb-4">
+                <div class="my_bottom_margin card text-center">
+                    <div class="img-container" style="height: 250px; overflow: hidden;">
+                        <a href="{{ product.get_url }}">
+                            <img class="card-img-top my_image img-fluid" src="{{ product.image.url }}" alt="{{ product.name }}">
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h4>{{ product.name }}</h4>
+                        <p>{{ product.price }}</p>
+                    </div>
+                </div>
+            </div>
+            {% if forloop.counter|divisibleby:3 and not forloop.last %}
+                </div><div class="row row-cols-1 row-cols-md-3 g-4">
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+<div class="container my_bottom_margin">
+    <div class="row mx-auto">
+        <p class="text-center my_search_text">0 results found</p>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

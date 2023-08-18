@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription %}
+This is the Cart page. Proceed to review your items and place the order.
+{% endblock %}
+
+{% block title %}
+Cart - CS Company PVT LTD
+{% endblock %}
+
+{% block content %}
+{% if not cart_items %}
+<div>
+  <div class="text-center">
+    <br>
+    <h1 class="text-center my_title">
+      Your Shopping Cart is Empty
+    </h1>
+    <br>
+    <p class="text-center">
+      Please Click <a href="{% url 'shopapp:allProdCat' %}">Here</a> to continue shopping
+    </p>
+  </div>
+</div>
+{% else %}
+<div>
+  <div class="text-center">
+    <br>
+    <h1 class="text-center my_title">
+      Your Shopping Cart
+    </h1>
+    <br>
+  </div>
+</div>
+<div class="row mx-auto">
+  <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+    <table class="table my_custom_table">
+      <thead class="my_custom_thead">
+        <tr>
+          <th colspan="5">
+            Your Items
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cart_item in cart_items %}
+        <tr>
+          <td>
+            <a href="{{ cart_item.product.get_absolute_url }}">
+              <img src="{{ cart_item.product.image.url }}" alt="" style="width=10px; height=10px; object-fit: contain;" class="img-fluid rounded custom-image">
+            </a>
+          </td>
+          <td class="text-left">
+            <p class="product-name">{{ cart_item.product.name }}</p>
+            <p class="product-info">
+              SKU: {{ cart_item.product.id }}<br>
+              Price: ${{ cart_item.product.price }}<br>
+              Qty: {{ cart_item.quantity }} x ${{ cart_item.product.price }}
+            </p>
+          </td>
+          <td>
+            ${{ cart_item.sub_total }}
+          </td>
+          <td>
+            {% if cart_item.quantity > 1 %}
+            <a href="{% url 'cart:cart_remove' cart_item.product.id %}" class="custom_a">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                    <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                </svg>
+            </a>
+            {% endif %}
+            <a href="{% url 'cart:full_remove' cart_item.product.id %}" class="custom_icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                </svg>
+            </a>
+            <a href="{% url 'cart:add_cart' cart_item.product.id %}" class="custom_a">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+    <table class="table my_custom_table">
+      <thead class="my_custom_thead">
+        <tr>
+          <th>
+            Checkout
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            Please review your shopping cart items before proceeding with the order payment.
+          </td>
+        </tr>
+        <tr>
+          <td class="text-left">
+            <center> Your Total is : <strong> {{total}} </strong> </center>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="mx-auto">
+      <a href="{% url 'shopapp:allProdCat' %}" class="btn btn-secondary btn-block  my_custom_button">Continue Shopping</a>
+    </div>
+    <div class="mx-auto mt-3">
+      <a href="{% url 'shopapp:allProdCat' %}" class="btn btn-primary btn-block  my_custom_button">Payment</a>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
